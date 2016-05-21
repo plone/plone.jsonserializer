@@ -23,6 +23,26 @@ class IJsonCompatible(Interface):
     """
 
 
+class ISchemaSerializer(Interface):
+    """ The fieldset serializer multi adapter serializes the schema
+    into JSON compatible python data.
+    """
+
+
+class IFieldsetSerializer(Interface):
+    """The fieldset serializer multi adapter serializes the fieldset and its fields
+    into JSON compatible python data.
+    """
+
+    def __init__(fieldset, context, request):
+        """Adapts fieldset, context and request.
+        """
+
+    def __call__():
+        """Returns JSON compatible python data.
+        """
+
+
 class IFieldSerializer(Interface):
     """The field serializer multi adapter serializes the field value into
     JSON compatible python data.
