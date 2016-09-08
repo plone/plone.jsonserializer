@@ -1,7 +1,14 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
-    i18n_domain="plone.restapi">
+    i18n_domain="plone">
 
+  <adapter factory=".converters.schema_dict_converter" />
+  <adapter factory=".converters.default_converter" />
+  <adapter factory=".converters.from_unicode_converter" />
+  <adapter factory=".converters.list_converter" />
+  <adapter factory=".converters.dict_converter" />
+  <adapter factory=".converters.frozenset_converter" />
+  <adapter factory=".converters.set_converter" />
+  <adapter factory=".converters.tuple_converter" />
 
 </configure>

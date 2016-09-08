@@ -23,6 +23,11 @@ class IJsonCompatible(Interface):
     """
 
 
+class ISchemaCompatible(Interface):
+    """Convert a value to a zope schema ompatible data structure.
+    """
+
+
 class ISchemaSerializer(Interface):
     """ The fieldset serializer multi adapter serializes the schema
     into JSON compatible python data.

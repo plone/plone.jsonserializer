@@ -5,18 +5,24 @@ from datetime import time
 from datetime import timedelta
 from persistent.list import PersistentList
 from persistent.mapping import PersistentMapping
-# TODO: Once plone.app.textfield is compatible
-# from plone.app.textfield.interfaces import IRichTextValue
 from plone.jsonserializer.interfaces import IJsonCompatible
-from zope.component import adapter
 from zope.component.hooks import getSite
-# TODO: from zope.globalrequest import getRequest
-from zope.i18n import translate
+from zope.component import adapter
 from zope.i18nmessageid.message import Message
 from zope.interface import implementer
 from zope.interface import Interface
 
-# TODO: import Missing
+try:
+    from plone.app.textfield import IRichTextValue
+    HAS_RICH_TEXT_VALUE = True
+except ImportError:
+    HAS_RICH_TEXT_VALUE = False
+
+try:
+    import Missing
+    HAS_ZOPE_MISSING = True
+except ImportError:
+    HAS_ZOPE_MISSING = False
 
 try:
     unicode
@@ -169,15 +175,16 @@ def time_converter(value):
 def timedelta_converter(value):
     return json_compatible(value.total_seconds())
 
-# TODO: Once plone.app.textfield is compatible
-# @adapter(IRichTextValue)
-# @implementer(IJsonCompatible)
-# def richtext_converter(value):
-#     return {
-#         u'data': json_compatible(value.raw),
-#         u'content-type': json_compatible(value.mimeType),
-#         u'encoding': json_compatible(value.encoding),
-#     }
+
+if HAS_RICH_TEXT_VALUE:
+    @adapter(IRichTextValue)
+    @implementer(IJsonCompatible)
+    def richtext_converter(value):
+        return {
+            u'data': json_compatible(value.raw),
+            u'content-type': json_compatible(value.mimeType),
+            u'encoding': json_compatible(value.encoding),
+        }
 
 
 @adapter(Message)
@@ -187,8 +194,9 @@ def i18n_message_converter(value):
     # value = translate(value, context=getRequest())
     return value
 
-# TODO
-# @adapter(Missing.Value.__class__)
-# @implementer(IJsonCompatible)
-# def missing_value_converter(value):
-#     return None
+
+if HAS_ZOPE_MISSING:
+    @adapter(Missing.Value.__class__)
+    @implementer(IJsonCompatible)
+    def missing_value_converter(value):
+        return None
