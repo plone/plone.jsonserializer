@@ -7,6 +7,7 @@ from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema._bootstrapinterfaces import IFromUnicode
 from zope.schema.interfaces import IDict
+from zope.schema.interfaces import IBool
 from zope.schema.interfaces import IField
 from zope.schema.interfaces import IFrozenSet
 from zope.schema.interfaces import IList
@@ -52,6 +53,12 @@ def schema_dict_converter(value, schema):
 @implementer(ISchemaCompatible)
 def default_converter(value, field):
     return value
+
+
+@adapter(Interface, IBool)
+@implementer(ISchemaCompatible)
+def bool_converter(value, field):
+    return bool(value)
 
 
 @adapter(Interface, IFromUnicode)

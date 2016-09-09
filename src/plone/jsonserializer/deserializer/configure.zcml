@@ -10,5 +10,6 @@
   <adapter factory=".converters.frozenset_converter" />
   <adapter factory=".converters.set_converter" />
   <adapter factory=".converters.tuple_converter" />
+  <adapter factory=".converters.bool_converter" />
 
 </configure>
