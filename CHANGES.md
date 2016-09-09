@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.1 (unreleased)
+0.9.1 (2016-09-09)
 ------------------
 
 - Add zope.schema.Bool adapter for ISchemaCompatible
