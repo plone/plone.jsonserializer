@@ -42,7 +42,8 @@ def schema_dict_converter(value, schema):
     if value == {}:
         return {}
 
-    keys, values = zip(*value.items())
+    items = [(k, v) for k, v in value.items() if k in schema]
+    keys, values = zip(*items)
     keys = map(str, keys)
     values = [schema_compatible(values[idx], schema[keys[idx]])
               for idx in range(len(keys))]
