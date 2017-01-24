@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.2 (unreleased)
+0.9.2 (2017-01-24)
 ------------------
 
 - Fix issue where deserializer failed when value had extra fields to target
