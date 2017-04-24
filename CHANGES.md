@@ -4,7 +4,8 @@ Changelog
 0.9.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix issue where schema_compatible was unable to deserializer BytesLine from unicode string
+  [datakurre]
 
 
 0.9.2 (2017-01-24)
