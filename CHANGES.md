@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.3 (unreleased)
+0.9.3 (2017-04-24)
 ------------------
 
 - Fix issue where schema_compatible was unable to deserializer BytesLine from unicode string
