@@ -65,7 +65,10 @@ def bool_converter(value, field):
 @adapter(Interface, IFromUnicode)
 @implementer(ISchemaCompatible)
 def from_unicode_converter(value, field):
-    return field.fromUnicode(value)
+    try:
+        return field.fromUnicode(value)
+    except UnicodeEncodeError:
+        return value.encode('utf-8', 'ignore')
 
 
 @adapter(list, IList)
