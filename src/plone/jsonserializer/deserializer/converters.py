@@ -6,6 +6,7 @@ from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema._bootstrapinterfaces import IFromUnicode
+from zope.schema.interfaces import ConstraintNotSatisfied
 from zope.schema.interfaces import IDict
 from zope.schema.interfaces import IBool
 from zope.schema.interfaces import IField
@@ -69,6 +70,8 @@ def from_unicode_converter(value, field):
         return field.fromUnicode(value)
     except UnicodeEncodeError:
         return value.encode('utf-8', 'ignore')
+    except ConstraintNotSatisfied:
+        return u''
 
 
 @adapter(list, IList)
