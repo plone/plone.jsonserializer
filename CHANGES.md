@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.4 (unreleased)
+0.9.4 (2017-08-21)
 ------------------
 
 - Add support for serializing plone.app.textfield RichTextValues
