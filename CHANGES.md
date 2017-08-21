@@ -4,8 +4,8 @@ Changelog
 0.9.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Add support for serializing plone.app.textfield RichTextValues
+  [datakurre]
 
 0.9.3 (2017-04-24)
 ------------------
