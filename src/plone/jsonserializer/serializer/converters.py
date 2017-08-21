@@ -183,6 +183,7 @@ if HAS_RICH_TEXT_VALUE:
         return {
             u'data': json_compatible(value.raw),
             u'content-type': json_compatible(value.mimeType),
+            u'output-content-type': json_compatible(value.outputMimeType),
             u'encoding': json_compatible(value.encoding),
         }
 

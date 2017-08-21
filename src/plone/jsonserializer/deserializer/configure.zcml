@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="plone">
 
   <adapter factory=".converters.schema_dict_converter" />
@@ -11,5 +12,7 @@
   <adapter factory=".converters.set_converter" />
   <adapter factory=".converters.tuple_converter" />
   <adapter factory=".converters.bool_converter" />
+  <adapter factory=".converters.richtext_converter"
+           zcml:condition="installed plone.app.textfield"/>
 
 </configure>

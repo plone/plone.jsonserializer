@@ -15,6 +15,13 @@ from zope.schema.interfaces import ISet
 from zope.schema.interfaces import ITuple
 import logging
 
+try:
+    from plone.app.textfield import IRichText
+    from plone.app.textfield import RichTextValue
+    HAS_RICH_TEXT_VALUE = True
+except ImportError:
+    HAS_RICH_TEXT_VALUE = False
+
 logger = logging.getLogger('plone.jsonserializer')
 
 
@@ -102,9 +109,31 @@ def dict_converter(value, field):
     if value == {}:
         return {}
 
+
     keys, values = zip(*value.items())
     keys = [schema_compatible(keys[idx], field.key_type)
             for idx in range(len(keys))]
     values = [schema_compatible(values[idx], field.value_type)
               for idx in range(len(values))]
-    return dict(zip(keys, values))
+    value = dict(zip(keys, values))
+
+    return value
+
+
+if HAS_RICH_TEXT_VALUE:
+    @adapter(dict, IRichText)
+    @implementer(ISchemaCompatible)
+    def richtext_converter(value, schema):
+        encoding = value.get('encoding', u'utf-8')\
+                        .encode('utf-8', 'ignore')
+        raw = value.get('data', '').encode(encoding)
+        mimeType = value.get('content-type', u'text/html')\
+                        .encode('utf-8', 'ignore')
+        outputMimeType = value.get('output-content-type', u'text/x-safe-html')\
+                              .encode('utf-8', 'ignore')
+        return RichTextValue(
+            raw=raw,
+            mimeType=mimeType,
+            outputMimeType=outputMimeType,
+            encoding=encoding
+        )
