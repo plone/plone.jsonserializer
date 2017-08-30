@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.5 (unreleased)
+0.9.5 (2017-08-30)
 ------------------
 
 - Fix issue where invalid vocabulary value broke serialization by only warn
