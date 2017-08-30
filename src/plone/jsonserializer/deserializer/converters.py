@@ -6,6 +6,7 @@ from zope.component import getMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.schema._bootstrapinterfaces import IFromUnicode
+from zope.schema._bootstrapinterfaces import ConstraintNotSatisfied
 from zope.schema.interfaces import IDict
 from zope.schema.interfaces import IBool
 from zope.schema.interfaces import IField
@@ -36,10 +37,12 @@ def schema_compatible(value, schema_or_field):
     try:
         return getMultiAdapter((value, schema_or_field), ISchemaCompatible)
     except ComponentLookupError:
-        logger.error((u'Deserializer not found for field type '
-                      u'"{0:s}" with value "{1:s}" and it was '
-                      u'deserialized to None.').format(
-            schema_or_field, value))
+        logger.warning((u'Deserializer not found for value '
+                        u'"{0:s}" of field "{1:s}". '
+                        u'Returning None instead.').format(
+            value,
+            schema_or_field.__name__
+        ))
         return None
 
 
@@ -76,6 +79,14 @@ def from_unicode_converter(value, field):
         return field.fromUnicode(value)
     except UnicodeEncodeError:
         return value.encode('utf-8', 'ignore')
+    except ConstraintNotSatisfied:
+        logger.warning(u'Constraint not satisfied for value '
+                       u'"{0:s}" of field "{1:s}". '
+                       u'Returning None instead.'.format(
+            value,
+            field.__name__
+        ))
+        return None
 
 
 @adapter(list, IList)
