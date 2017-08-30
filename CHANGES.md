@@ -4,8 +4,9 @@ Changelog
 0.9.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix issue where invalid vocabulary value broke serialization by only warn
+  about it and deserializing invalid value to None
+  [datakurre]
 
 0.9.4 (2017-08-21)
 ------------------
