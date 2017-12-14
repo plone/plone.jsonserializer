@@ -140,7 +140,7 @@ if HAS_RICH_TEXT_VALUE:
         raw = value.get('data', '').encode(encoding)
         mimeType = value.get('content-type', u'text/html')\
                         .encode('utf-8', 'ignore')
-        outputMimeType = value.get('output-content-type', u'text/x-safe-html')\
+        outputMimeType = value.get('output-content-type', u'text/x-html-safe')\
                               .encode('utf-8', 'ignore')
         return RichTextValue(
             raw=raw,
