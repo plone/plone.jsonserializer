@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.6 (unreleased)
+0.9.6 (2017-12-14)
 ------------------
 
 - Fix issue where deserialized rich text value got wrong default output
