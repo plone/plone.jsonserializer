@@ -4,8 +4,9 @@ Changelog
 0.9.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix issue where deserialized rich text value got wrong default output
+  mimetype (got "x-safe-html" instead of "x-html-safe")
+  [datakurre]
 
 0.9.5 (2017-08-30)
 ------------------
