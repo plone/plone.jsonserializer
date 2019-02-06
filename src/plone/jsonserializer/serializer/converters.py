@@ -6,11 +6,13 @@ from datetime import timedelta
 from persistent.list import PersistentList
 from persistent.mapping import PersistentMapping
 from plone.jsonserializer.interfaces import IJsonCompatible
-from zope.component.hooks import getSite
 from zope.component import adapter
+from zope.component.hooks import getSite
 from zope.i18nmessageid.message import Message
-from zope.interface import implementer
 from zope.interface import Interface
+from zope.interface import implementer
+
+import six
 
 try:
     from plone.app.textfield import IRichTextValue
@@ -23,16 +25,6 @@ try:
     HAS_ZOPE_MISSING = True
 except ImportError:
     HAS_ZOPE_MISSING = False
-
-try:
-    unicode
-except NameError:
-    unicode = str
-
-try:
-    long
-except NameError:
-    long = int
 
 try:
     from Products.CMFPlone.utils import safe_unicode
@@ -80,7 +72,7 @@ def default_converter(value):
     if value is None:
         return value
 
-    if type(value) in (unicode, bool, int, float, long):
+    if isinstance(value, (six.text_type, six.integer_types, bool, float)):
         return value
 
     raise TypeError(
@@ -131,8 +123,8 @@ def dict_converter(value):
         return {}
 
     keys, values = zip(*value.items())
-    keys = map(json_compatible, keys)
-    values = map(json_compatible, values)
+    keys = [json_compatible(k) for k in  keys]
+    values = [json_compatible(v) for v in values]
     return dict(zip(keys, values))
 
 
