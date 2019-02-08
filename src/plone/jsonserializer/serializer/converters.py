@@ -125,7 +125,7 @@ def dict_converter(value):
         return {}
 
     keys, values = list(zip(*list(value.items())))
-    keys = [json_compatible(k) for k in  keys]
+    keys = [json_compatible(k) for k in keys]
     values = [json_compatible(v) for v in values]
     return dict(list(zip(keys, values)))
 

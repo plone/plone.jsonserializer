@@ -83,12 +83,13 @@ def from_unicode_converter(value, field):
     except UnicodeEncodeError:
         return value.encode('utf-8', 'ignore')
     except ConstraintNotSatisfied:
-        logger.warning(u'Constraint not satisfied for value '
-                       u'"{0:s}" of field "{1:s}". '
-                       u'Returning None instead.'.format(
-            value,
-            field.__name__
-        ))
+        logger.warning(
+            u'Constraint not satisfied for value '
+            u'"{0:s}" of field "{1:s}". '
+            u'Returning None instead.'.format(
+                value,
+                field.__name__
+            ))
         return None
 
 
@@ -122,7 +123,6 @@ def frozenset_converter(value, field):
 def dict_converter(value, field):
     if value == {}:
         return {}
-
 
     keys, values = list(zip(*list(value.items())))
     keys = [schema_compatible(keys[idx], field.key_type)
