@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from plone.jsonserializer.interfaces import ISchemaCompatible
-from zope.component import adapter
+from six.moves import range
+from six.moves import zip
 from zope.component import ComponentLookupError
+from zope.component import adapter
 from zope.component import getMultiAdapter
-from zope.interface import implementer
 from zope.interface import Interface
-from zope.schema._bootstrapinterfaces import IFromUnicode
+from zope.interface import implementer
 from zope.schema._bootstrapinterfaces import ConstraintNotSatisfied
-from zope.schema.interfaces import IDict
+from zope.schema._bootstrapinterfaces import IFromUnicode
 from zope.schema.interfaces import IBool
+from zope.schema.interfaces import IDict
 from zope.schema.interfaces import IField
 from zope.schema.interfaces import IFrozenSet
 from zope.schema.interfaces import IList
 from zope.schema.interfaces import ISet
 from zope.schema.interfaces import ITuple
-import logging
 
 try:
     from plone.app.textfield import IRichText
@@ -53,11 +56,11 @@ def schema_dict_converter(value, schema):
         return {}
 
     items = [(k, v) for k, v in value.items() if k in schema]
-    keys, values = zip(*items)
-    keys = map(str, keys)
+    keys, values = list(zip(*items))
+    keys = [str(k) for k in keys]
     values = [schema_compatible(values[idx], schema[keys[idx]])
               for idx in range(len(keys))]
-    return dict(zip(keys, values))
+    return dict(list(zip(keys, values)))
 
 
 @adapter(Interface, IField)
@@ -80,12 +83,13 @@ def from_unicode_converter(value, field):
     except UnicodeEncodeError:
         return value.encode('utf-8', 'ignore')
     except ConstraintNotSatisfied:
-        logger.warning(u'Constraint not satisfied for value '
-                       u'"{0:s}" of field "{1:s}". '
-                       u'Returning None instead.'.format(
-            value,
-            field.__name__
-        ))
+        logger.warning(
+            u'Constraint not satisfied for value '
+            u'"{0:s}" of field "{1:s}". '
+            u'Returning None instead.'.format(
+                value,
+                field.__name__
+            ))
         return None
 
 
@@ -120,13 +124,12 @@ def dict_converter(value, field):
     if value == {}:
         return {}
 
-
-    keys, values = zip(*value.items())
+    keys, values = list(zip(*list(value.items())))
     keys = [schema_compatible(keys[idx], field.key_type)
             for idx in range(len(keys))]
     values = [schema_compatible(values[idx], field.value_type)
               for idx in range(len(values))]
-    value = dict(zip(keys, values))
+    value = dict(list(zip(keys, values)))
 
     return value
 

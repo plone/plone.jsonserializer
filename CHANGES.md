@@ -4,8 +4,8 @@ Changelog
 0.9.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- python 3 compatibility
+  [petschki]
 
 0.9.6 (2017-12-14)
 ------------------
