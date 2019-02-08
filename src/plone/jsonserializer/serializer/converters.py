@@ -6,6 +6,8 @@ from datetime import timedelta
 from persistent.list import PersistentList
 from persistent.mapping import PersistentMapping
 from plone.jsonserializer.interfaces import IJsonCompatible
+from six.moves import map
+from six.moves import zip
 from zope.component import adapter
 from zope.component.hooks import getSite
 from zope.i18nmessageid.message import Message
@@ -122,10 +124,10 @@ def dict_converter(value):
     if value == {}:
         return {}
 
-    keys, values = zip(*value.items())
+    keys, values = list(zip(*list(value.items())))
     keys = [json_compatible(k) for k in  keys]
     values = [json_compatible(v) for v in values]
-    return dict(zip(keys, values))
+    return dict(list(zip(keys, values)))
 
 
 @adapter(PersistentMapping)
