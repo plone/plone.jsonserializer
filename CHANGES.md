@@ -1,6 +1,22 @@
 Changelog
 =========
 
+0.9.8 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 0.9.7 (2019-02-10)
 ------------------
 
