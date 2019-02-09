@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.7 (unreleased)
+0.9.7 (2019-02-10)
 ------------------
 
 - python 3 compatibility
