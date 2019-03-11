@@ -19,6 +19,8 @@ from zope.schema.interfaces import IList
 from zope.schema.interfaces import ISet
 from zope.schema.interfaces import ITuple
 
+import six
+
 try:
     from plone.app.textfield import IRichText
     from plone.app.textfield import RichTextValue
@@ -140,7 +142,9 @@ if HAS_RICH_TEXT_VALUE:
     def richtext_converter(value, schema):
         encoding = value.get('encoding', u'utf-8')\
                         .encode('utf-8', 'ignore')
-        raw = value.get('data', '').encode(encoding)
+        raw = value.get('data', '')
+        if isinstance(value, six.text_type):
+            raw.encode(encoding)
         mimeType = value.get('content-type', u'text/html')\
                         .encode('utf-8', 'ignore')
         outputMimeType = value.get('output-content-type', u'text/x-html-safe')\
