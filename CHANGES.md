@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- unicode fix for themefragments
 
 
 0.9.7 (2019-02-10)
