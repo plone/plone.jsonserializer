@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- unicode fix for themefragments
+- unicode fix for themefragments [espenmn]
 
 
 0.9.7 (2019-02-10)
