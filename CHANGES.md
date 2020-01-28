@@ -4,7 +4,17 @@ Changelog
 0.9.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
 
 
 0.9.8 (2020-01-28)
