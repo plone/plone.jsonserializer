@@ -4,23 +4,14 @@ Changelog
 0.9.8 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- unicode fix for themefragments [espenmn]
-
+- Fix unicode issue in deserializing RichTextValue from JSON [espenmn]
 
 0.9.7 (2019-02-10)
 ------------------
 
-- python 3 compatibility
+- Python 3 compatibility
   [petschki]
 
 0.9.6 (2017-12-14)
