@@ -140,15 +140,18 @@ if HAS_RICH_TEXT_VALUE:
     @adapter(dict, IRichText)
     @implementer(ISchemaCompatible)
     def richtext_converter(value, schema):
-        encoding = value.get('encoding', u'utf-8')\
-                        .encode('utf-8', 'ignore')
+        encoding = value.get('encoding', u'utf-8')
+        if not isinstance(encoding, six.text_type):
+            encoding = encoding.decode('utf-8', 'ignore')
         raw = value.get('data', '')
-        if isinstance(value, six.text_type):
-            raw.encode(encoding)
-        mimeType = value.get('content-type', u'text/html')\
-                        .encode('utf-8', 'ignore')
-        outputMimeType = value.get('output-content-type', u'text/x-html-safe')\
-                              .encode('utf-8', 'ignore')
+        if not isinstance(raw, six.text_type):
+            raw = raw.decode(encoding, 'ignore')
+        mimeType = value.get('content-type', u'text/html')
+        if not isinstance(mimeType, six.text_type):
+            mimeType = mimeType.decode(encoding, 'ignore')
+        outputMimeType = value.get('output-content-type', u'text/x-html-safe')
+        if not isinstance(outputMimeType, six.text_type):
+            outputMimeType = outputMimeType.decode(encoding, 'ignore')
         return RichTextValue(
             raw=raw,
             mimeType=mimeType,

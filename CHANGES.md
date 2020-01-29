@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Python 3 compatibility [cdw9]
 
 
 0.9.8 (2020-01-28)
