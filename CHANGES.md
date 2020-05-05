@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.9 (unreleased)
+0.9.9 (2020-05-05)
 ------------------
 
 - Python 3 compatibility [cdw9]

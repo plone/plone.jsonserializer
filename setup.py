@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.9.9.dev0'
+version = '0.9.9'
 
 long_description = (
     open('README.md').read() + '\n' +
