@@ -4,16 +4,6 @@ Changelog
 0.9.9 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
-Bug fixes:
-
 - Python 3 compatibility [cdw9]
 
 
