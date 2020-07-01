@@ -4,7 +4,7 @@ Changelog
 0.9.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- zope.interface >= 5.0 adapter registration fix [petschki]
 
 
 0.9.9 (2020-05-05)

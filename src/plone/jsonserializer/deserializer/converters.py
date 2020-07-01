@@ -74,12 +74,17 @@ def default_converter(value, field):
 @adapter(Interface, IBool)
 @implementer(ISchemaCompatible)
 def bool_converter(value, field):
+    # since zope.interface >= 5.0 we never get here ... see below from_unicode_converter
     return bool(value)
 
 
 @adapter(Interface, IFromUnicode)
 @implementer(ISchemaCompatible)
 def from_unicode_converter(value, field):
+    # zope.schema.Bool fields also provide IFromUnicode
+    # since zope.interface >= 5.0 we get this adapter for boolean fields
+    if isinstance(value, bool):
+        value = str(value)
     try:
         return field.fromUnicode(value)
     except UnicodeEncodeError:
