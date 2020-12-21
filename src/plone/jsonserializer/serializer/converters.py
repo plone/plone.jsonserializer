@@ -33,12 +33,6 @@ try:
 except ImportError:
     safe_unicode = str
 
-try:
-    from Products.CMFPlone.utils import getSiteEncoding
-except ImportError:
-    HAS_SITE = False
-else:
-    HAS_SITE = True
 
 try:
     from DateTime import DateTime
@@ -62,10 +56,7 @@ def json_compatible(value):
 
 
 def encoding():
-    if HAS_SITE:
-        return getSiteEncoding(getSite())
-    else:
-        return 'utf-8'
+    return 'utf-8'
 
 
 @adapter(Interface)

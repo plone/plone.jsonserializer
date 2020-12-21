@@ -4,7 +4,7 @@ Changelog
 0.9.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove deprecation warning (Fixes #10) [ale-rt]
 
 
 0.9.10 (2020-07-01)
