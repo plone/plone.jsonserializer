@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.9.11 (unreleased)
+0.9.11 (2022-11-25)
 -------------------
 
 - Remove deprecation warning (Fixes #10) [ale-rt]
