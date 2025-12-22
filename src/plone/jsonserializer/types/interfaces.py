@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Interfaces."""
+
 from zope.interface import Interface
 
 

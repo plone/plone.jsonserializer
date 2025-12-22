@@ -1,5 +1,7 @@
-# -*- coding: utf-8 -*-
 """JsonSchema providers."""
+
+from plone.restapi.types.interfaces import IJsonSchemaProvider
+from plone.restapi.types.utils import get_fields_from_schema
 from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -25,13 +27,10 @@ from zope.schema.interfaces import ITextLine
 from zope.schema.interfaces import ITuple
 from zope.schema.interfaces import IVocabularyFactory
 
-from plone.restapi.types.interfaces import IJsonSchemaProvider
-from plone.restapi.types.utils import get_fields_from_schema
-
 
 @adapter(IField, Interface, Interface)
 @implementer(IJsonSchemaProvider)
-class DefaultJsonSchemaProvider(object):
+class DefaultJsonSchemaProvider:
 
     def __init__(self, field, context, request):
         self.field = field
@@ -47,7 +46,7 @@ class DefaultJsonSchemaProvider(object):
 
     def get_description(self):
         if self.field.description is None:
-            return u''
+            return ""
 
         return translate(self.field.description, context=self.request)
 
@@ -57,12 +56,12 @@ class DefaultJsonSchemaProvider(object):
         You should override `additional` method to provide more properties
         about the field."""
         schema = {
-            'type': self.get_type(),
-            'title': self.get_title(),
-            'description': self.get_description(),
+            "type": self.get_type(),
+            "title": self.get_title(),
+            "description": self.get_description(),
         }
         if self.field.default is not None:
-            schema['default'] = self.field.default
+            schema["default"] = self.field.default
 
         schema.update(self.additional())
         return schema
@@ -76,7 +75,7 @@ class DefaultJsonSchemaProvider(object):
 class TextLineJsonSchemaProvider(DefaultJsonSchemaProvider):
 
     def get_type(self):
-        return 'string'
+        return "string"
 
 
 @adapter(IText, Interface, Interface)
@@ -86,10 +85,10 @@ class TextJsonSchemaProvider(TextLineJsonSchemaProvider):
     def additional(self):
         info = {}
         if self.field.min_length is not None:
-            info['minLength'] = self.field.min_length
+            info["minLength"] = self.field.min_length
 
         if self.field.max_length is not None:
-            info['maxLength'] = self.field.max_length
+            info["maxLength"] = self.field.max_length
 
         return info
 
@@ -113,15 +112,15 @@ class ASCIILineJsonSchemaProvider(TextLineJsonSchemaProvider):
 class FloatJsonSchemaProvider(DefaultJsonSchemaProvider):
 
     def get_type(self):
-        return 'number'
+        return "number"
 
     def additional(self):
         info = {}
         if self.field.min is not None:
-            info['minimum'] = self.field.min
+            info["minimum"] = self.field.min
 
         if self.field.max is not None:
-            info['maximum'] = self.field.max
+            info["maximum"] = self.field.max
 
         return info
 
@@ -138,7 +137,7 @@ class DecimalJsonSchemaProvider(FloatJsonSchemaProvider):
 class IntegerJsonSchemaProvider(FloatJsonSchemaProvider):
 
     def get_type(self):
-        return 'integer'
+        return "integer"
 
 
 @adapter(IBool, Interface, Interface)
@@ -146,7 +145,7 @@ class IntegerJsonSchemaProvider(FloatJsonSchemaProvider):
 class BoolJsonSchemaProvider(DefaultJsonSchemaProvider):
 
     def get_type(self):
-        return 'boolean'
+        return "boolean"
 
 
 @adapter(ICollection, Interface, Interface)
@@ -154,26 +153,26 @@ class BoolJsonSchemaProvider(DefaultJsonSchemaProvider):
 class CollectionJsonSchemaProvider(DefaultJsonSchemaProvider):
 
     def get_type(self):
-        return 'array'
+        return "array"
 
     def get_items(self):
         """Get items properties."""
         value_type_adapter = getMultiAdapter(
-            (self.field.value_type, self.context, self.request),
-            IJsonSchemaProvider)
+            (self.field.value_type, self.context, self.request), IJsonSchemaProvider
+        )
 
         return value_type_adapter.get_schema()
 
     def additional(self):
         info = {}
-        info['additionalItems'] = True
+        info["additionalItems"] = True
         if self.field.min_length:
-            info['minItems'] = self.field.min_length
+            info["minItems"] = self.field.min_length
 
         if self.field.max_length:
-            info['maxItems'] = self.field.max_length
+            info["maxItems"] = self.field.max_length
 
-        info['items'] = self.get_items()
+        info["items"] = self.get_items()
 
         return info
 
@@ -183,11 +182,11 @@ class CollectionJsonSchemaProvider(DefaultJsonSchemaProvider):
 class ListJsonSchemaProvider(CollectionJsonSchemaProvider):
 
     def additional(self):
-        info = super(ListJsonSchemaProvider, self).additional()
+        info = super().additional()
         if IChoice.providedBy(self.field.value_type):
-            info['uniqueItems'] = True
+            info["uniqueItems"] = True
         else:
-            info['uniqueItems'] = False
+            info["uniqueItems"] = False
 
         return info
 
@@ -197,8 +196,8 @@ class ListJsonSchemaProvider(CollectionJsonSchemaProvider):
 class SetJsonSchemaProvider(CollectionJsonSchemaProvider):
 
     def additional(self):
-        info = super(SetJsonSchemaProvider, self).additional()
-        info['uniqueItems'] = True
+        info = super().additional()
+        info["uniqueItems"] = True
         return info
 
 
@@ -214,7 +213,7 @@ class TupleJsonSchemaProvider(SetJsonSchemaProvider):
 class ChoiceJsonSchemaProvider(DefaultJsonSchemaProvider):
 
     def get_type(self):
-        return 'string'
+        return "string"
 
     def additional(self):
         # choices and enumNames are v5 proposals, for now we implement both
@@ -222,13 +221,13 @@ class ChoiceJsonSchemaProvider(DefaultJsonSchemaProvider):
         enum = []
         enum_names = []
         if self.field.vocabularyName:
-            vocabulary = getUtility(
-                IVocabularyFactory,
-                name=self.field.vocabularyName)(self.context)
+            vocabulary = getUtility(IVocabularyFactory, name=self.field.vocabularyName)(
+                self.context
+            )
         else:
             vocabulary = self.field.vocabulary
 
-        if hasattr(vocabulary, '__iter__'):
+        if hasattr(vocabulary, "__iter__"):
             for term in vocabulary:
                 title = translate(term.title, context=self.request)
                 choices.append((term.token, title))
@@ -236,9 +235,9 @@ class ChoiceJsonSchemaProvider(DefaultJsonSchemaProvider):
                 enum_names.append(title)
 
             return {
-                'enum': enum,
-                'enumNames': enum_names,
-                'choices': choices,
+                "enum": enum,
+                "enumNames": enum_names,
+                "choices": choices,
             }
         else:
             return {}
@@ -248,23 +247,24 @@ class ChoiceJsonSchemaProvider(DefaultJsonSchemaProvider):
 @implementer(IJsonSchemaProvider)
 class ObjectJsonSchemaProvider(DefaultJsonSchemaProvider):
 
-    prefix = ''
+    prefix = ""
 
     def get_type(self):
-        return 'object'
+        return "object"
 
     def get_properties(self):
         if self.prefix:
-            prefix = '.'.join([self.prefix, self.field.__name__])
+            prefix = ".".join([self.prefix, self.field.__name__])
         else:
             prefix = self.field.__name__
 
         return get_fields_from_schema(
-            self.field.schema, self.context, self.request, prefix)
+            self.field.schema, self.context, self.request, prefix
+        )
 
     def additional(self):
-        info = super(ObjectJsonSchemaProvider, self).additional()
-        info['properties'] = self.get_properties()
+        info = super().additional()
+        info["properties"] = self.get_properties()
         return info
 
 
@@ -273,15 +273,15 @@ class ObjectJsonSchemaProvider(DefaultJsonSchemaProvider):
 class DateJsonSchemaProvider(DefaultJsonSchemaProvider):
 
     def get_type(self):
-        return 'string'
+        return "string"
 
     def additional(self):
         info = {}
         if self.field.min is not None:
-            info['minimum'] = self.field.min
+            info["minimum"] = self.field.min
 
         if self.field.max is not None:
-            info['maximum'] = self.field.max
+            info["maximum"] = self.field.max
 
         return info
 

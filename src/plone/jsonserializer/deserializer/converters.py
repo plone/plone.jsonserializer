@@ -1,14 +1,9 @@
-# -*- coding: utf-8 -*-
-import logging
-
 from plone.jsonserializer.interfaces import ISchemaCompatible
-from six.moves import range
-from six.moves import zip
-from zope.component import ComponentLookupError
 from zope.component import adapter
+from zope.component import ComponentLookupError
 from zope.component import getMultiAdapter
-from zope.interface import Interface
 from zope.interface import implementer
+from zope.interface import Interface
 from zope.schema._bootstrapinterfaces import ConstraintNotSatisfied
 from zope.schema._bootstrapinterfaces import IFromUnicode
 from zope.schema.interfaces import IBool
@@ -19,16 +14,18 @@ from zope.schema.interfaces import IList
 from zope.schema.interfaces import ISet
 from zope.schema.interfaces import ITuple
 
-import six
+import logging
+
 
 try:
     from plone.app.textfield import IRichText
     from plone.app.textfield import RichTextValue
+
     HAS_RICH_TEXT_VALUE = True
 except ImportError:
     HAS_RICH_TEXT_VALUE = False
 
-logger = logging.getLogger('plone.jsonserializer')
+logger = logging.getLogger("plone.jsonserializer")
 
 
 def schema_compatible(value, schema_or_field):
@@ -42,12 +39,13 @@ def schema_compatible(value, schema_or_field):
     try:
         return getMultiAdapter((value, schema_or_field), ISchemaCompatible)
     except ComponentLookupError:
-        logger.warning((u'Deserializer not found for value '
-                        u'"{0:s}" of field "{1:s}". '
-                        u'Returning None instead.').format(
-            value,
-            schema_or_field.__name__
-        ))
+        logger.warning(
+            (
+                "Deserializer not found for value "
+                '"{:s}" of field "{:s}". '
+                "Returning None instead."
+            ).format(value, schema_or_field.__name__)
+        )
         return None
 
 
@@ -60,8 +58,9 @@ def schema_dict_converter(value, schema):
     items = [(k, v) for k, v in value.items() if k in schema]
     keys, values = list(zip(*items))
     keys = [str(k) for k in keys]
-    values = [schema_compatible(values[idx], schema[keys[idx]])
-              for idx in range(len(keys))]
+    values = [
+        schema_compatible(values[idx], schema[keys[idx]]) for idx in range(len(keys))
+    ]
     return dict(list(zip(keys, values)))
 
 
@@ -88,23 +87,20 @@ def from_unicode_converter(value, field):
     try:
         return field.fromUnicode(value)
     except UnicodeEncodeError:
-        return value.encode('utf-8', 'ignore')
+        return value.encode("utf-8", "ignore")
     except ConstraintNotSatisfied:
         logger.warning(
-            u'Constraint not satisfied for value '
-            u'"{0:s}" of field "{1:s}". '
-            u'Returning None instead.'.format(
-                value,
-                field.__name__
-            ))
+            "Constraint not satisfied for value "
+            '"{:s}" of field "{:s}". '
+            "Returning None instead.".format(value, field.__name__)
+        )
         return None
 
 
 @adapter(list, IList)
 @implementer(ISchemaCompatible)
 def list_converter(value, field):
-    return [schema_compatible(item, field.value_type)
-            for item in value]
+    return [schema_compatible(item, field.value_type) for item in value]
 
 
 @adapter(list, ITuple)
@@ -132,34 +128,32 @@ def dict_converter(value, field):
         return {}
 
     keys, values = list(zip(*list(value.items())))
-    keys = [schema_compatible(keys[idx], field.key_type)
-            for idx in range(len(keys))]
-    values = [schema_compatible(values[idx], field.value_type)
-              for idx in range(len(values))]
+    keys = [schema_compatible(keys[idx], field.key_type) for idx in range(len(keys))]
+    values = [
+        schema_compatible(values[idx], field.value_type) for idx in range(len(values))
+    ]
     value = dict(list(zip(keys, values)))
 
     return value
 
 
 if HAS_RICH_TEXT_VALUE:
+
     @adapter(dict, IRichText)
     @implementer(ISchemaCompatible)
     def richtext_converter(value, schema):
-        encoding = value.get('encoding', u'utf-8')
-        if not isinstance(encoding, six.text_type):
-            encoding = encoding.decode('utf-8', 'ignore')
-        raw = value.get('data', '')
-        if not isinstance(raw, six.text_type):
-            raw = raw.decode(encoding, 'ignore')
-        mimeType = value.get('content-type', u'text/html')
-        if not isinstance(mimeType, six.text_type):
-            mimeType = mimeType.decode(encoding, 'ignore')
-        outputMimeType = value.get('output-content-type', u'text/x-html-safe')
-        if not isinstance(outputMimeType, six.text_type):
-            outputMimeType = outputMimeType.decode(encoding, 'ignore')
+        encoding = value.get("encoding", "utf-8")
+        if not isinstance(encoding, str):
+            encoding = encoding.decode("utf-8", "ignore")
+        raw = value.get("data", "")
+        if not isinstance(raw, str):
+            raw = raw.decode(encoding, "ignore")
+        mimeType = value.get("content-type", "text/html")
+        if not isinstance(mimeType, str):
+            mimeType = mimeType.decode(encoding, "ignore")
+        outputMimeType = value.get("output-content-type", "text/x-html-safe")
+        if not isinstance(outputMimeType, str):
+            outputMimeType = outputMimeType.decode(encoding, "ignore")
         return RichTextValue(
-            raw=raw,
-            mimeType=mimeType,
-            outputMimeType=outputMimeType,
-            encoding=encoding
+            raw=raw, mimeType=mimeType, outputMimeType=outputMimeType, encoding=encoding
         )
