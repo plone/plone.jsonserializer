@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # pylint: disable=E0211, W0221
 # E0211: Method has no argument
 # W0221: Arguments number differs from overridden '__call__' method
@@ -8,8 +6,7 @@ from zope.interface import Interface
 
 
 class ISerializeToJson(Interface):
-    """Adapter to serialize a Dexterity object into a JSON object.
-    """
+    """Adapter to serialize a Dexterity object into a JSON object."""
 
 
 class ISerializeToJsonSummary(Interface):
@@ -19,17 +16,15 @@ class ISerializeToJsonSummary(Interface):
 
 
 class IJsonCompatible(Interface):
-    """Convert a value to a JSON compatible data structure.
-    """
+    """Convert a value to a JSON compatible data structure."""
 
 
 class ISchemaCompatible(Interface):
-    """Convert a value to a zope schema ompatible data structure.
-    """
+    """Convert a value to a zope schema ompatible data structure."""
 
 
 class ISchemaSerializer(Interface):
-    """ The fieldset serializer multi adapter serializes the schema
+    """The fieldset serializer multi adapter serializes the schema
     into JSON compatible python data.
     """
 
@@ -40,12 +35,10 @@ class IFieldsetSerializer(Interface):
     """
 
     def __init__(fieldset, context, request):
-        """Adapts fieldset, context and request.
-        """
+        """Adapts fieldset, context and request."""
 
     def __call__():
-        """Returns JSON compatible python data.
-        """
+        """Returns JSON compatible python data."""
 
 
 class IFieldSerializer(Interface):
@@ -54,12 +47,10 @@ class IFieldSerializer(Interface):
     """
 
     def __init__(field, context, request):
-        """Adapts field, context and request.
-        """
+        """Adapts field, context and request."""
 
     def __call__():
-        """Returns JSON compatible python data.
-        """
+        """Returns JSON compatible python data."""
 
 
 class IDeserializeFromJson(Interface):
@@ -67,13 +58,10 @@ class IDeserializeFromJson(Interface):
 
 
 class IFieldDeserializer(Interface):
-    """An adapter to deserialize a JSON value into a field value.
-    """
+    """An adapter to deserialize a JSON value into a field value."""
 
     def __init__(field, context, request):
-        """Adapts a field, it's context and the request.
-        """
+        """Adapts a field, it's context and the request."""
 
     def __call__(value):
-        """Convert the provided JSON value to a field value.
-        """
+        """Convert the provided JSON value to a field value."""

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.jsonserializer.exceptions import DeserializationError
 
 import json
@@ -6,9 +5,9 @@ import json
 
 def json_body(request):
     try:
-        data = json.loads(request.get('BODY', '{}'))
+        data = json.loads(request.get("BODY", "{}"))
     except ValueError:
-        raise DeserializationError('No JSON object could be decoded')
+        raise DeserializationError("No JSON object could be decoded")
     if not isinstance(data, dict):
-        raise DeserializationError('Malformed body')
+        raise DeserializationError("Malformed body")
     return data
