@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+1.0.0a1 (2025-12-23)
+--------------------
+
+Internal:
+
+
+- PEP 420 namespace package.
+  Configure with plone/meta.
+  @petschki
+
 
 0.9.12 (unreleased)
 -------------------
