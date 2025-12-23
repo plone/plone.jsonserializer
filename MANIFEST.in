@@ -1,4 +1,4 @@
 recursive-include src *
-include LICENSE *.md *.py
+include *.rst *.py
 global-exclude *.pyc *.pyo
 recursive-exclude news *

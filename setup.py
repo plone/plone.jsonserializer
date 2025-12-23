@@ -3,7 +3,7 @@ from setuptools import setup
 
 version = "1.0.0.dev0"
 
-long_description = open("README.md").read() + "\n" + open("CHANGES.md").read() + "\n"
+long_description = open("README.rst").read() + "\n" + open("CHANGES.rst").read() + "\n"
 
 setup(
     name="plone.jsonserializer",
